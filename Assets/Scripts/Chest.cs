@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent (typeof(Interactable))]
 public class Chest : MonoBehaviour
 {
   public bool open = false;
@@ -10,12 +11,14 @@ public class Chest : MonoBehaviour
   public event ChestOpenedEvent ChestOpened;
 
   private SpriteRenderer spriteRenderer;
+  private Interactable interactable;
 
   void Start()
   {
     spriteRenderer = GetComponent<SpriteRenderer>();
+    interactable = GetComponent<Interactable>();
+    interactable.interacted += Open;
   }
-
   public void Open()
   {
     if (open) return;
