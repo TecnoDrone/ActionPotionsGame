@@ -1,11 +1,20 @@
 using UnityEngine;
 using System;
 
-//for now, no way to remove plant
+[RequireComponent(typeof(Interactable))]
 public class Terrain : MonoBehaviour
 {
-  public void SpawnErb(ErbKind erbKind)
+  private Interactable interactable;
+
+  void Start()
   {
+    interactable = GetComponent<Interactable>();
+    interactable.interacted += SpawnErb;
+  }
+
+  public void SpawnErb(GameObject entity)
+  {
+    var erbKind = ErbKind.Basil;
     var erbPrefabName = erbKind switch
     {
       ErbKind.Basil => ErbKind.Basil.ToString(),
