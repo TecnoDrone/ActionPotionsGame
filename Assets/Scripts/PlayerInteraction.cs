@@ -1,27 +1,40 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
-  public Interactable interactable;
+  private Dictionary<int, Interactable> interactablesInRange = new Dictionary<int, Interactable>();
+
+  void Update()
+  {
+    if (Input.GetKeyDown(KeyCode.F))
+    {
+      foreach (var interactable in interactablesInRange.Values)
+      {
+        interactable.Interact(gameObject);
+      }
+    }
+  }
 
   private void OnTriggerEnter2D(Collider2D collision)
   {
-    if (!collision.gameObject.TryGetComponent<Interactable>(out var interactable))
-      return;
-
-    this.interactable = interactable;
+    Interactable interactable = collision.GetComponent<Interactable>();
+    if (interactable != null)
+    {
+      int instanceId = collision.gameObject.GetInstanceID();
+      if (!interactablesInRange.ContainsKey(instanceId))
+      {
+        interactablesInRange.Add(instanceId, interactable);
+      }
+    }
   }
 
   private void OnTriggerExit2D(Collider2D collision)
   {
-    this.interactable = null;
-  }
-
-  private void Update()
-  {
-    if (Input.GetKeyUp(KeyCode.F))
+    int instanceId = collision.gameObject.GetInstanceID();
+    if (interactablesInRange.ContainsKey(instanceId))
     {
-      if (interactable != null) interactable.Interact();
+      interactablesInRange.Remove(instanceId);
     }
   }
 }

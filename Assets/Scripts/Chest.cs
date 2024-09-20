@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent (typeof(Interactable))]
+[RequireComponent(typeof(Interactable))]
 public class Chest : MonoBehaviour
 {
   public bool open = false;
@@ -8,7 +8,7 @@ public class Chest : MonoBehaviour
   public Sprite chestClosedSprite;
 
   public delegate void ChestOpenedEvent();
-  public event ChestOpenedEvent ChestOpened;
+  public event ChestOpenedEvent ChestOpened; //implement LootManager to generate loot on ChestOpened
 
   private SpriteRenderer spriteRenderer;
   private Interactable interactable;
@@ -19,7 +19,7 @@ public class Chest : MonoBehaviour
     interactable = GetComponent<Interactable>();
     interactable.interacted += Open;
   }
-  public void Open()
+  public void Open(GameObject entity)
   {
     if (open) return;
 

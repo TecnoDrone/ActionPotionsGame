@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-  public delegate void Interacted();
+  public delegate void Interacted(GameObject entity);
   public event Interacted interacted;
 
-  public void Interact()
+  public void Interact(GameObject entity)
   {
-    interacted?.Invoke();
+    interacted?.Invoke(entity);
   }
 }
